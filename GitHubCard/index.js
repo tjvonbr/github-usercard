@@ -41,7 +41,7 @@ axios.get('https://api.github.com/users/tjvonbr')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [
+const instructorsArray = [
 'tetondan',
 'dustinmyers',
 'justsml',
@@ -49,7 +49,7 @@ const followersArray = [
 'bigknell'
 ];
 
-followersArray.forEach(person => {
+instructorsArray.forEach(person => {
   axios.get(`https://api.github.com/users/${person}`)
   .then(response => {
     const newPassedData = response.data;
@@ -61,10 +61,30 @@ followersArray.forEach(person => {
   })
 })
 
+
+// Try to pull followers data onto page
+const followersArray = [
+  'willhorn',
+  'johnschneider1'
+]
+
+followersArray.forEach(person => {
+  axios.get(`https://github.com/users/${person}`)
+  .then(response => {
+    const followerPassedData = response.data;
+    const followerUserCard = createUsercard(followerPassedData);
+    cardsNode.appendChild(followerUserCard);
+  })
+  .catch(error => {
+    console.log('Just fuck off.', error);
+  })
+})  
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
 <div class="card">
+  <h2> Instructors </h2>
   <img src={image url of user} />
   <div class="card-info">
     <h3 class="name">{users name}</h3>
@@ -104,14 +124,14 @@ function createUsercard(receivedData) {
   cardUsername.classList.add('username');
   
    //Add content where necessary
- cardImg.src = receivedData.avatar_url;
- cardName.textContent = receivedData.name;
- cardUsername.textContent = receivedData.login;
- cardLocation.textContent = `Location:  ${receivedData.location}`;
- cardLink.textContent = `Profile:  ${receivedData.url}`;
- cardFollowers.textContent = `Followers:  ${receivedData.followers}`;
- cardFollowing.textContent = `Following:  ${receivedData.following}`;
- cardBio.textContent = `Bio:  ${receivedData.bio}`;
+  cardImg.src = receivedData.avatar_url;
+  cardName.textContent = receivedData.name;
+  cardUsername.textContent = receivedData.login;
+  cardLocation.textContent = `Location:  ${receivedData.location}`;
+  cardLink.textContent = `Profile:  ${receivedData.url}`;
+  cardFollowers.textContent = `Followers:  ${receivedData.followers}`;
+  cardFollowing.textContent = `Following:  ${receivedData.following}`;
+  cardBio.textContent = `Bio:  ${receivedData.bio}`;
 
   //Add class names where necessary
   card.appendChild(cardImg);
@@ -127,11 +147,3 @@ function createUsercard(receivedData) {
 
   return card;
 }
-
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
